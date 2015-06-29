@@ -14,6 +14,17 @@ MODEL_TARGET = (
     (1, 'Racket'),
 )
 
+GENDER = (
+    ('Male'),
+    ('Female'),
+)
+
+
+class UserProfile(User):
+    gender = models.CharField(max_length=6, choices=GENDER)
+    birthday = models.DateField()
+
+
 class Request(models.Model):
     owner = models.ForeignKey(User)
     title = models.CharField(max_length=50)
