@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import datetime
+
 
 FILE_TYPE = (
     (0, 'Video'),
@@ -23,7 +25,7 @@ GENDER = (
 class UserProfile(User):
     class Meta:
         verbose_name = 'UserProfile'
-        
+
     gender = models.CharField(max_length=1, choices=GENDER)
     birthday = models.DateField()
 
@@ -37,8 +39,8 @@ class Request(models.Model):
     remove = models.BooleanField(default=False)
 
     @property
-    def get_expiry(self):
-        pass
+    def expiry(self):
+        return self.created + datetime.timedelta(days=self.duration)
 
 
 class Racket(models.Model):
@@ -52,9 +54,7 @@ class Racket(models.Model):
 
 
 class Comment(models.Model):
-    #0 = Request, 1 = Racket
     category = models.IntegerField(choices=MODEL_TARGET)
-    #request_id or racket_id
     category_id = models.IntegerField()
     comment = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
@@ -64,7 +64,7 @@ class Comment(models.Model):
 class Rating(models.Model):
     user = models.ForeignKey(User)
     racket = models.ForeignKey(Racket)
-    #star rating maximum 5
+    # star rating maximum 5
     score = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     remove = models.BooleanField(default=False)

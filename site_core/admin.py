@@ -13,6 +13,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         ('Personal Information', {'fields': [
             'first_name',
             'last_name',
+            'email',
             'gender',
             'birthday',
         ]}),
@@ -26,7 +27,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     )
 
 admin.site.unregister(User)
-admin.site.register(UserProfile, UserAdmin)
+admin.site.register(UserProfile, UserProfileAdmin)
 
 admin.site.register(Racket)
 admin.site.register(Request)
