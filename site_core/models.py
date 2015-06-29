@@ -46,8 +46,8 @@ class Request(models.Model):
     duration = models.IntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
     remove = models.BooleanField(default=False)
-    comment = GenericRelation(Comment)
-    upload = GenericRelation(Upload)
+    comments = GenericRelation(Comment)
+    uploads = GenericRelation(Upload)
 
     @property
     def get_expiry(self):
@@ -65,8 +65,8 @@ class Racket(models.Model):
     date_started = models.DateField()
     created = models.DateField(auto_now_add=True)
     remove = models.BooleanField(default=False)
-    comment = GenericRelation(Comment)
-    upload = GenericRelation(Upload)
+    comments = GenericRelation(Comment)
+    uploads = GenericRelation(Upload)
 
     def __unicode__(self):
         return self.title
