@@ -51,20 +51,22 @@ class Request(BaseModel):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=50)
     description = models.TextField()
-    duration = models.IntegerField(default=1)
+    duration = models.PositiveIntegerField(default=1)
     comments = GenericRelation(Comment)
     uploads = GenericRelation(Upload)
+
+    def __unicode__(self):
+        return self.title
 
     @property
     def expiry(self):
         return self.created + datetime.timedelta(days=self.duration)
 
-    @property
-    def is_expired(self):
+    def has_expired(self):
         return self.expiry < timezone.now()
-
-    def __unicode__(self):
-        return self.title
+    has_expired.admin_order_field = 'created'
+    has_expired.boolean = True
+    has_expired.short_description = 'Expired?'
 
 
 class Racket(BaseModel):
@@ -78,6 +80,9 @@ class Racket(BaseModel):
 
     def __unicode__(self):
         return self.title
+
+    def has_started(self):
+        return self.date_started < timezone.now()
 
 
 class Rating(BaseModel):
