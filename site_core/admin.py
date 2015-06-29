@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
 from site_core.models import (Racket, Request, Upload, Comment, Rating,
                               Reputation, UserProfile)
 
@@ -26,7 +25,6 @@ class UserProfileAdmin(admin.ModelAdmin):
         ], 'classes': ['collapse']}),
     )
 
-admin.site.unregister(User)
 admin.site.register(UserProfile, UserProfileAdmin)
 
 admin.site.register(Racket)
