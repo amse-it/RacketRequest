@@ -63,7 +63,7 @@ class Request(BaseModel):
         return self.expiry < timezone.now()
     is_expired.admin_order_field = 'created'
     is_expired.boolean = True
-    is_expired.short_descriptio = 'Expired'
+    is_expired.short_description = 'Expired?'
 
     def __unicode__(self):
         return self.title
