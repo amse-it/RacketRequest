@@ -59,11 +59,11 @@ class Request(BaseModel):
     def expiry(self):
         return self.created + datetime.timedelta(days=self.duration)
 
-    def is_expired(self):
+    def has_expired(self):
         return self.expiry < timezone.now()
-    is_expired.admin_order_field = 'created'
-    is_expired.boolean = True
-    is_expired.short_description = 'Expired?'
+    has_expired.admin_order_field = 'created'
+    has_expired.boolean = True
+    has_expired.short_description = 'Expired?'
 
     def __unicode__(self):
         return self.title
