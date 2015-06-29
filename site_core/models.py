@@ -15,13 +15,16 @@ MODEL_TARGET = (
 )
 
 GENDER = (
-    ('Male'),
-    ('Female'),
+    ('M', 'Male'),
+    ('F', 'Female'),
 )
 
 
 class UserProfile(User):
-    gender = models.CharField(max_length=6, choices=GENDER)
+    class Meta:
+        verbose_name = 'UserProfile'
+        
+    gender = models.CharField(max_length=1, choices=GENDER)
     birthday = models.DateField()
 
 
