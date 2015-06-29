@@ -10,7 +10,7 @@ class RequestTests(TestCase):
     def setUpTestData(cls):
         cls.user = UserProfile.objects.create(username='user', password='1234')
 
-    def test_is_expired_with_an_old_request(self):
+    def test_has_expired_with_an_old_request(self):
         """
         `is_expired` should return `True` for a request that is older than it's
         duration.
@@ -26,7 +26,7 @@ class RequestTests(TestCase):
 
         self.assertTrue(r.is_expired)
 
-    def test_is_expired_with_a_recent_request(self):
+    def test_has_expired_with_a_recent_request(self):
         """
         `is_expired` should return `False` for a request that is younger than
         it's duration.
