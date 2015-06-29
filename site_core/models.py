@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -16,6 +16,29 @@ MODEL_TARGET = (
     (1, 'Racket'),
 )
 
+class Comment(models.Model):
+    content_type = models.ForeignKey(ContentType, default=None)
+    object_id = models.PositiveIntegerField(default=None)
+    content_object = GenericForeignKey('content_type', 'object_id')
+    comment = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    remove = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.comment
+
+
+class Upload(models.Model):
+    content_type = models.ForeignKey(ContentType, default=None)
+    object_id = models.PositiveIntegerField(default=None)
+    content_object = GenericForeignKey('content_type', 'object_id')
+    path = models.URLField()
+    title = models.CharField(max_length=50)
+    type = models.IntegerField(choices=FILE_TYPE)
+    created = models.DateTimeField(auto_now_add=True)
+    remove = models.BooleanField(default=False)
+
+
 class Request(models.Model):
     owner = models.ForeignKey(User)
     title = models.CharField(max_length=50)
@@ -23,6 +46,8 @@ class Request(models.Model):
     duration = models.IntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
     remove = models.BooleanField(default=False)
+    comment = GenericRelation(Comment)
+    upload = GenericRelation(Upload)
 
     @property
     def get_expiry(self):
@@ -40,21 +65,11 @@ class Racket(models.Model):
     date_started = models.DateField()
     created = models.DateField(auto_now_add=True)
     remove = models.BooleanField(default=False)
+    comment = GenericRelation(Comment)
+    upload = GenericRelation(Upload)
 
     def __unicode__(self):
         return self.title
-
-
-class Comment(models.Model):
-    content_type = models.ForeignKey(ContentType, default=None)
-    object_id = models.PositiveIntegerField(default=None)
-    content_object = GenericForeignKey('content_type', 'object_id')
-    comment = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-    remove = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return self.comment
 
 
 class Rating(models.Model):
@@ -62,17 +77,6 @@ class Rating(models.Model):
     racket = models.ForeignKey(Racket)
     #star rating maximum 5
     score = models.IntegerField(default=0)
-    created = models.DateTimeField(auto_now_add=True)
-    remove = models.BooleanField(default=False)
-
-
-class Upload(models.Model):
-    content_type = models.ForeignKey(ContentType, default=None)
-    object_id = models.PositiveIntegerField(default=None)
-    content_object = GenericForeignKey('content_type', 'object_id')
-    path = models.URLField()
-    title = models.CharField(max_length=50)
-    type = models.IntegerField(choices=FILE_TYPE)
     created = models.DateTimeField(auto_now_add=True)
     remove = models.BooleanField(default=False)
 
