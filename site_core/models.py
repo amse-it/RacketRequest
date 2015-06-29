@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import (
     GenericForeignKey, GenericRelation)
 from django.contrib.contenttypes.models import ContentType
 
+import datetime
 
 FILE_TYPE = (
     (0, 'Video'),
@@ -54,8 +55,8 @@ class Request(BaseModel):
     uploads = GenericRelation(Upload)
 
     @property
-    def get_expiry(self):
-        pass
+    def expiry(self):
+        return self.created + datetime.timedelta(days=self.duration)
 
     def __unicode__(self):
         return self.title
