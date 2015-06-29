@@ -4,7 +4,7 @@ from site_core.models import (Racket, Request, Upload, Comment, Rating,
 
 
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created', 'is_expired')
+    list_display = ('title', 'created', 'has_expired')
     list_filter = ['created']
     search_fields = ['question_text']
 
