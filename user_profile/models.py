@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 GENDER = (
     ('M', 'Male'),
@@ -7,9 +7,10 @@ GENDER = (
 )
 
 
-class UserProfile(User):
-    class Meta(User.Meta):
-        verbose_name = 'UserProfile'
+class UserProfile(AbstractUser):
+    class Meta(AbstractUser.Meta):
+        verbose_name = 'User Profile'
+        verbose_name_plural = 'User Profiles'
 
     gender = models.CharField(max_length=1, choices=GENDER)
-    birthday = models.DateField()
+    birthday = models.DateField(null=True)

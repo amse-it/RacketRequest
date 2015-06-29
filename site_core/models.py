@@ -1,5 +1,5 @@
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 
 import datetime
 
@@ -18,7 +18,7 @@ MODEL_TARGET = (
 
 
 class Request(models.Model):
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=50)
     description = models.TextField()
     duration = models.IntegerField(default=1)
@@ -32,7 +32,7 @@ class Request(models.Model):
 
 class Racket(models.Model):
     request = models.ForeignKey(Request)
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=50)
     description = models.TextField()
     date_started = models.DateField()
@@ -49,7 +49,7 @@ class Comment(models.Model):
 
 
 class Rating(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     racket = models.ForeignKey(Racket)
     # star rating maximum 5
     score = models.IntegerField(default=0)
@@ -68,8 +68,9 @@ class Upload(models.Model):
 
 
 class Reputation(models.Model):
-    user = models.ForeignKey(User, related_name='reputations')
-    referral = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             related_name='reputations')
+    referral = models.ForeignKey(settings.AUTH_USER_MODEL)
     is_credible = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
     remove = models.BooleanField(default=False)
