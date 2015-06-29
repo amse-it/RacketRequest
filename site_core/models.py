@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 
 FILE_TYPE = (
@@ -26,6 +28,9 @@ class Request(models.Model):
     def get_expiry(self):
         pass
 
+    def __unicode__(self):
+        return self.title
+
 
 class Racket(models.Model):
     request = models.ForeignKey(Request)
@@ -36,15 +41,20 @@ class Racket(models.Model):
     created = models.DateField(auto_now_add=True)
     remove = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return self.title
+
 
 class Comment(models.Model):
-    #0 = Request, 1 = Racket
-    category = models.IntegerField(choices=MODEL_TARGET)
-    #request_id or racket_id
-    category_id = models.IntegerField()
+    content_type = models.ForeignKey(ContentType, default=None)
+    object_id = models.PositiveIntegerField(default=None)
+    content_object = GenericForeignKey('content_type', 'object_id')
     comment = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     remove = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.comment
 
 
 class Rating(models.Model):
@@ -57,8 +67,9 @@ class Rating(models.Model):
 
 
 class Upload(models.Model):
-    category = models.IntegerField(choices=MODEL_TARGET)
-    category_id = models.IntegerField()
+    content_type = models.ForeignKey(ContentType, default=None)
+    object_id = models.PositiveIntegerField(default=None)
+    content_object = GenericForeignKey('content_type', 'object_id')
     path = models.URLField()
     title = models.CharField(max_length=50)
     type = models.IntegerField(choices=FILE_TYPE)
