@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import (
     GenericForeignKey, GenericRelation)
 from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
 
 import datetime
 
@@ -57,6 +58,10 @@ class Request(BaseModel):
     @property
     def expiry(self):
         return self.created + datetime.timedelta(days=self.duration)
+
+    @property
+    def is_expired(self):
+        return self.expiry < timezone.now()
 
     def __unicode__(self):
         return self.title
